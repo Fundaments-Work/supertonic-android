@@ -24,7 +24,9 @@ object AssetManager {
     private const val TAG = "AssetManager"
     private const val BASE_URL_V1 = "https://huggingface.co/Supertone/supertonic/resolve/main"
     private const val BASE_URL_V2 = "https://huggingface.co/Supertone/supertonic-2/resolve/main"
-    private const val BASE_URL_V3 = "https://huggingface.co/Supertone/supertonic-3/resolve/main"
+    // V3 (Supertonic 3) is mirrored on our own release so model downloads
+    // don't depend on Hugging Face rate limits. Release assets are flat.
+    private const val BASE_URL_V3 = "https://github.com/sapienskid/supertonic-assets/releases/download/v1"
     private const val CONNECT_TIMEOUT_MS = 15_000
     private const val READ_TIMEOUT_MS = 60_000
     private const val MAX_RETRIES = 3
@@ -80,6 +82,10 @@ object AssetManager {
             f.exists() && f.length() > 0 
         }
     }
+
+    /** GitHub release assets are flat: strip the local subdirectory for v3. */
+    private fun remotePathFor(version: String, relativePath: String): String =
+        if (version == "v3") relativePath.substringAfterLast('/') else relativePath
 
     suspend fun downloadV1(context: Context, onProgress: (String, Float, Long, Long) -> Unit) {
         downloadVersion(context, "v1", BASE_URL_V1, V1_FILES, onProgress)
@@ -239,7 +245,7 @@ object AssetManager {
                 if (targetFile.exists()) {
                     totalBytes += targetFile.length()
                 } else {
-                    val len = probeFileSize("$baseUrl/$relativePath")
+                    val len = probeFileSize("$baseUrl/${remotePathFor(version, relativePath)}")
                     if (len > 0) totalBytes += len
                 }
             }
@@ -262,7 +268,7 @@ object AssetManager {
 
                 targetFile.parentFile?.let { if (!it.exists()) it.mkdirs() }
 
-                val url = "$baseUrl/$relativePath"
+                val url = "$baseUrl/${remotePathFor(version, relativePath)}"
                 val fileName = targetFile.name
                 Log.d(TAG, "Downloading $url to ${targetFile.absolutePath}")
                 onProgress(
