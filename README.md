@@ -1,3 +1,17 @@
+# Theorem Neural Voice
+
+> **Theorem Neural Voice** is a companion TTS engine app for
+> [Theorem](https://github.com/sapienskid/Theorem) — Android neural narration
+> for its immersion reader. It is a fork of **Supertonic TTS** by
+> [DevGitPit](https://github.com/DevGitPit/supertonic-android) (GPL-3.0-only);
+> modifications: rebrand, package ID `work.fundamentals.theorem.neuralvoice`,
+> and model downloads served from the
+> [supertonic-assets](https://github.com/sapienskid/supertonic-assets) mirror
+> (Supertone/supertonic-3 weights, OpenRAIL-M) instead of Hugging Face.
+> Changes are documented in the commit history.
+
+## Get Supertonic for Android
+
 ## Get Supertonic for Android
 
 Supertonic is a Text-to-Speech (TTS) engine available across multiple platforms. This repository is for the Systemwide TTS implementation on Android specifically, supporting most/all `ARM` ABIs on Play Store and GitHub releases APKs. On F-Droid release currently only `arm64-v8a` is implemented. 

@@ -1,1 +1,1 @@
-Local AI Text-to-Speech using Supertonic ONNX
+Local AI Text-to-Speech using Theorem Neural Voice ONNX
