@@ -10,18 +10,14 @@
 > (Supertone/supertonic-3 weights, OpenRAIL-M) instead of Hugging Face.
 > Changes are documented in the commit history.
 
-## Get Supertonic for Android
+## Releases
 
-## Get Supertonic for Android
-
-Supertonic is a Text-to-Speech (TTS) engine available across multiple platforms. This repository is for the Systemwide TTS implementation on Android specifically, supporting most/all `ARM` ABIs on Play Store and GitHub releases APKs. On F-Droid release currently only `arm64-v8a` is implemented. 
-
-Please note that functionality and bug fixes may vary slightly between the F-Droid and Play Store builds as there can be version difference as they get submitted and approved following different timetables.
-
-### Download Options
-
-* **Stable Release:** Available now on [F-Droid](https://f-droid.org/packages/com.brahmadeo.supertonic.tts/)
-* **Stable Release:** Available on [Google Play Store](https://play.google.com/store/apps/details?id=com.brahmadeo.supertonic.tts)
+Download pre-built APKs from the [Releases](https://github.com/Fundaments-Work/supertonic-android/releases) page.
+We provide split APKs for each device architecture:
+* **`arm64-v8a`**: Modern 64-bit Android devices (recommended for most phones)
+* **`armeabi-v7a`**: Older 32-bit ARM devices
+* **`x86_64`**: 64-bit emulators and Intel-based Android devices
+* **`universal`**: Combined build supporting all architectures
 
 ---
 

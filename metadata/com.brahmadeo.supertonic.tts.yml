@@ -5,13 +5,13 @@ Categories:
   - Text to Speech
 License: GPL-3.0-only
 AuthorName: Brahmadeo
-SourceCode: https://github.com/DevGitPit/supertonic-android
-IssueTracker: https://github.com/DevGitPit/supertonic-android/issues
+SourceCode: https://github.com/Fundaments-Work/supertonic-android
+IssueTracker: https://github.com/Fundaments-Work/supertonic-android/issues
 
-AutoName: Supertonic TTS
+AutoName: Theorem Neural Voice
 
 RepoType: git
-Repo: https://github.com/DevGitPit/supertonic-android
+Repo: https://github.com/Fundaments-Work/supertonic-android
 
 Builds:
   - versionName: 2.8.0

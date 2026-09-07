@@ -124,6 +124,7 @@ ext.abiCodes = ['armeabi-v7a': 1, 'arm64-v8a': 2, 'x86': 3, 'x86_64': 4]
 android {
     namespace = 'com.brahmadeo.supertonic.tts'
     compileSdk = 37
+    ndkVersion = "28.2.13676358"
 
     defaultConfig {
         applicationId = "work.fundamentals.theorem.neuralvoice"
@@ -146,7 +147,7 @@ android {
             enable = isSplitApksEnabled()
             reset()
             include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-            universalApk = false
+            universalApk = true
         }
     }
 
