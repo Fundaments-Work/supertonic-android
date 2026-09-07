@@ -72,15 +72,45 @@ jobs:
 
       - name: Sign APKs
         id: sign_apk
-        uses: r0adkll/sign-android-release@v1
-        with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
-          alias: ${{ secrets.KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "35.0.0"
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          APKSIGNER=$(find "${ANDROID_SDK_ROOT}/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+          echo "Using apksigner: $APKSIGNER"
+
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "Signing with repository secret keystore..."
+            echo "$KEYSTORE_BASE64" | base64 -d > app/build/outputs/apk/release/signingKey.jks
+            for apk in app/build/outputs/apk/release/*-unsigned.apk; do
+              [ -f "$apk" ] || continue
+              out="${apk%-unsigned.apk}-signed.apk"
+              "$APKSIGNER" sign \
+                --ks app/build/outputs/apk/release/signingKey.jks \
+                --ks-key-alias "$KEY_ALIAS" \
+                --ks-pass "pass:$KEYSTORE_PASSWORD" \
+                --key-pass "pass:$KEY_PASSWORD" \
+                --out "$out" "$apk"
+            done
+          else
+            echo "No repository keystore secret configured; generating release key for APK signing..."
+            keytool -genkeypair -v -keystore app/build/outputs/apk/release/release.jks \
+              -alias theorem -keyalg RSA -keysize 2048 -validity 10000 \
+              -storepass theorem123 -keypass theorem123 \
+              -dname "CN=Theorem Neural Voice, O=Fundaments, C=US"
+            for apk in app/build/outputs/apk/release/*-unsigned.apk; do
+              [ -f "$apk" ] || continue
+              out="${apk%-unsigned.apk}-signed.apk"
+              "$APKSIGNER" sign \
+                --ks app/build/outputs/apk/release/release.jks \
+                --ks-key-alias theorem \
+                --ks-pass pass:theorem123 \
+                --key-pass pass:theorem123 \
+                --out "$out" "$apk"
+            done
+          fi
 
       - name: Clean Ref Name
         id: clean_ref
