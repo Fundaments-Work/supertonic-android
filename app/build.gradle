@@ -130,8 +130,8 @@ android {
         applicationId = "work.fundamentals.theorem.neuralvoice"
         minSdk = 24
         targetSdk = 37
-        versionCode = 24
-        versionName = "3.2.7"
+        versionCode = 25
+        versionName = "3.2.7-theorem.3"
 
         if (!isSplitApksEnabled()) {
             ndk {
