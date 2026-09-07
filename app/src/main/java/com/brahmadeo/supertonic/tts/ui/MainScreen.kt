@@ -55,11 +55,13 @@ fun MainScreen(
     voices: Map<String, String>,
     selectedVoiceFile: String,
     onVoiceChange: (String) -> Unit,
+    onPlayDemoClick: () -> Unit,
 
     isMixingEnabled: Boolean,
     onMixingEnabledChange: (Boolean) -> Unit,
     selectedVoiceFile2: String,
     onVoice2Change: (String) -> Unit,
+    onPlayDemo2Click: () -> Unit,
     mixAlpha: Float,
     onMixAlphaChange: (Float) -> Unit,
 
@@ -81,7 +83,6 @@ fun MainScreen(
     onLexiconClick: () -> Unit,
     onDeleteV2Click: () -> Unit,
     onDeleteV3Click: () -> Unit,
-    onOpenEbookClick: () -> Unit,
     isV2Ready: Boolean,
     isV3Ready: Boolean,
 
@@ -99,10 +100,11 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
                 title = { 
                     Text(
                         stringResource(AppR.string.app_name),
-                        style = MaterialTheme.typography.headlineMedium
+                        style = MaterialTheme.typography.titleLarge
                     ) 
                 },
                 actions = {
@@ -120,11 +122,7 @@ fun MainScreen(
                             text = { Text(stringResource(AppR.string.action_reset)) }, 
                             onClick = { showMenu = false; onResetClick() }
                         )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(AppR.string.action_open_ebook)) }, 
-                            leadingIcon = { Icon(Icons.AutoMirrored.Filled.LibraryBooks, contentDescription = null) },
-                            onClick = { showMenu = false; onOpenEbookClick() }
-                        )
+
                         DropdownMenuItem(
                             text = { Text(stringResource(AppR.string.action_saved)) }, 
                             leadingIcon = { Icon(Icons.Default.Save, contentDescription = null) },
@@ -290,12 +288,27 @@ fun MainScreen(
                             onOptionSelected = { name -> onLangChange(languages[name] ?: "en") }
                         )
 
-                        DropdownSelector(
-                            label = stringResource(AppR.string.voice_style_label),
-                            options = voices.keys.toList().sorted(),
-                            selectedOption = voices.entries.find { it.value == selectedVoiceFile }?.key ?: "",
-                            onOptionSelected = { name -> onVoiceChange(voices[name] ?: "M1.json") }
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Box(modifier = Modifier.weight(1f)) {
+                                DropdownSelector(
+                                    label = stringResource(AppR.string.voice_style_label),
+                                    options = voices.keys.toList().sorted(),
+                                    selectedOption = voices.entries.find { it.value == selectedVoiceFile }?.key ?: "",
+                                    onOptionSelected = { name -> onVoiceChange(voices[name] ?: "M1.json") }
+                                )
+                            }
+                            IconButton(
+                                onClick = onPlayDemoClick,
+                                colors = IconButtonDefaults.filledTonalIconButtonColors(),
+                                modifier = Modifier.padding(top = 6.dp)
+                            ) {
+                                Icon(Icons.Default.PlayArrow, contentDescription = stringResource(AppR.string.play_demo))
+                            }
+                        }
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -311,12 +324,27 @@ fun MainScreen(
 
                         AnimatedVisibility(visible = isMixingEnabled) {
                             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                                DropdownSelector(
-                                    label = stringResource(AppR.string.voice_style_2_label),
-                                    options = voices.keys.toList().sorted(),
-                                    selectedOption = voices.entries.find { it.value == selectedVoiceFile2 }?.key ?: "",
-                                    onOptionSelected = { name -> onVoice2Change(voices[name] ?: "M2.json") }
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Box(modifier = Modifier.weight(1f)) {
+                                        DropdownSelector(
+                                            label = stringResource(AppR.string.voice_style_2_label),
+                                            options = voices.keys.toList().sorted(),
+                                            selectedOption = voices.entries.find { it.value == selectedVoiceFile2 }?.key ?: "",
+                                            onOptionSelected = { name -> onVoice2Change(voices[name] ?: "M2.json") }
+                                        )
+                                    }
+                                    IconButton(
+                                        onClick = onPlayDemo2Click,
+                                        colors = IconButtonDefaults.filledTonalIconButtonColors(),
+                                        modifier = Modifier.padding(top = 6.dp)
+                                    ) {
+                                        Icon(Icons.Default.PlayArrow, contentDescription = stringResource(AppR.string.play_demo))
+                                    }
+                                }
 
                                 SliderWithLabel(
                                     label = stringResource(AppR.string.mix_ratio_label),
@@ -582,10 +610,12 @@ fun MainScreenPreview() {
             voices = mapOf("Voice 1" to "v1", "Voice 2" to "v2"),
             selectedVoiceFile = "v1",
             onVoiceChange = {},
+            onPlayDemoClick = {},
             isMixingEnabled = true,
             onMixingEnabledChange = {},
             selectedVoiceFile2 = "v2",
             onVoice2Change = {},
+            onPlayDemo2Click = {},
             mixAlpha = 0.5f,
             onMixAlphaChange = {},
             speed = 1.0f,
@@ -603,7 +633,6 @@ fun MainScreenPreview() {
             onLexiconClick = {},
             onDeleteV2Click = {},
             onDeleteV3Click = {},
-            onOpenEbookClick = {},
             isV2Ready = true,
             isV3Ready = true,
             canResume = true,

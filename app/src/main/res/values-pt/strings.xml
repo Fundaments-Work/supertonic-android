@@ -1,8 +1,11 @@
 <resources>
-    <string name="app_name">Supertonic TTS</string>
+    <string name="app_name">Theorem Neural Voice</string>
+    <string name="tts_engine_name">Theorem TTS</string>
+    <string name="play_demo">Ouvir demonstração</string>
+    <string name="voice_demo_text">Olá! Esta é uma demonstração da voz %1$s no Theorem Neural Voice.</string>
     
     <!-- Main Activity -->
-    <string name="default_input_text">Olá mundo, este é o Supertonic TTS no Android. Selecione uma voz e velocidade abaixo!</string>
+    <string name="default_input_text">Olá mundo, este é o Theorem TTS no Android. Selecione uma voz e velocidade abaixo!</string>
     <string name="voice_style_label">Estilo de Voz</string>
     <string name="mix_voices_label">Misturar vozes</string>
     <string name="voice_style_2_label">Voz secundária</string>

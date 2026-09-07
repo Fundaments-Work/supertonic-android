@@ -108,6 +108,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".GetSampleTextActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.speech.tts.engine.GET_SAMPLE_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".PlaybackActivity"
             android:parentActivityName=".MainActivity"
             android:intentMatchingFlags="allowNullAction"
@@ -153,7 +162,7 @@
 
         <service android:name=".service.SupertonicTextToSpeechService"
             android:exported="true"
-            android:label="Supertonic TTS"
+            android:label="@string/tts_engine_name"
             android:permission="android.permission.BIND_TEXT_TO_SPEECH_SERVICE">
             <intent-filter android:priority="100">
                 <action android:name="android.intent.action.TTS_SERVICE" />

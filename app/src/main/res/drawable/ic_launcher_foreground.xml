@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Sound wave voice bars in Theorem style -->
+    <path
+        android:strokeColor="#fafaf8"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 28,49 L 28,59
+                          M 36,43 L 36,65
+                          M 45,34 L 45,74
+                          M 54,26 L 54,82
+                          M 63,34 L 63,74
+                          M 72,43 L 72,65
+                          M 80,49 L 80,59" />
+</vector>

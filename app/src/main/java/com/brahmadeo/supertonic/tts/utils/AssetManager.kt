@@ -26,7 +26,7 @@ object AssetManager {
     private const val BASE_URL_V2 = "https://huggingface.co/Supertone/supertonic-2/resolve/main"
     // V3 (Supertonic 3) is mirrored on our own release so model downloads
     // don't depend on Hugging Face rate limits. Release assets are flat.
-    private const val BASE_URL_V3 = "https://github.com/sapienskid/supertonic-assets/releases/download/v1"
+    private const val BASE_URL_V3 = "https://github.com/fundaments-work/supertonic-assets/releases/download/v1"
     private const val CONNECT_TIMEOUT_MS = 15_000
     private const val READ_TIMEOUT_MS = 60_000
     private const val MAX_RETRIES = 3

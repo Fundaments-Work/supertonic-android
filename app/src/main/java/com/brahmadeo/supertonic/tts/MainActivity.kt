@@ -459,6 +459,9 @@ class MainActivity : ComponentActivity() {
                                 startService(resetIntent)
                             }
                         },
+                        onPlayDemoClick = {
+                            playVoiceDemo(viewModel.selectedVoiceFile.value)
+                        },
 
                         isMixingEnabled = viewModel.isMixingEnabled.value,
                         onMixingEnabledChange = { 
@@ -474,6 +477,9 @@ class MainActivity : ComponentActivity() {
                         onVoice2Change = {
                             viewModel.selectedVoiceFile2.value = it
                             saveStringPref("selected_voice_2", it)
+                        },
+                        onPlayDemo2Click = {
+                            playVoiceDemo(viewModel.selectedVoiceFile2.value)
                         },
                         mixAlpha = viewModel.mixAlpha.floatValue,
                         onMixAlphaChange = { 
@@ -535,19 +541,6 @@ class MainActivity : ComponentActivity() {
                         onLexiconClick = { startActivity(Intent(this, LexiconActivity::class.java)) },
                         onDeleteV2Click = { viewModel.showV2DeleteDialog.value = true },
                         onDeleteV3Click = { viewModel.showV3DeleteDialog.value = true },
-                        onOpenEbookClick = { 
-                            try {
-                                if (EbookManager.getRecentBooks(this).isEmpty()) {
-                                    ebookLauncher.launch(arrayOf("application/epub+zip", "application/pdf"))
-                                } else {
-                                    val intent = Intent(this, EbookLibraryActivity::class.java)
-                                    ebookOutlineLauncher.launch(intent)
-                                }
-                            } catch (e: Exception) {
-                                Log.e("MainActivity", "Failed to open ebook library", e)
-                                ebookLauncher.launch(arrayOf("application/epub+zip", "application/pdf"))
-                            }
-                        },
                         isV2Ready = AssetManager.isV2Ready(this),
                         isV3Ready = AssetManager.isV3Ready(this),
 
@@ -760,6 +753,38 @@ class MainActivity : ComponentActivity() {
             }
         } catch (_: Exception) {
             launchPlaybackActivity(text, stylePath)
+        }
+    }
+
+    private fun playVoiceDemo(voiceFile: String) {
+        val isReady = AssetManager.isVersionReady(this, currentModelVersion)
+        if (!isReady) {
+            startDownload(currentModelVersion)
+            return
+        }
+
+        if (viewModel.isInitializing.value) return
+
+        val stylePath = File(filesDir, "$currentModelVersion/voice_styles/$voiceFile").absolutePath
+        if (!File(stylePath).exists()) {
+            startDownload(currentModelVersion)
+            return
+        }
+
+        val vName = viewModel.voiceFiles.entries.find { it.value == voiceFile }?.key ?: voiceFile
+        val demoText = getString(R.string.voice_demo_text, vName)
+
+        HistoryManager.saveItem(this, demoText, "Demo: $vName")
+
+        try {
+            if (playbackService?.isServiceActive == true) {
+                viewModel.queueDialogText = demoText
+                viewModel.showQueueDialog.value = true
+            } else {
+                launchPlaybackActivity(demoText, stylePath)
+            }
+        } catch (_: Exception) {
+            launchPlaybackActivity(demoText, stylePath)
         }
     }
 
